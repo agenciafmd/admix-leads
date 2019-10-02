@@ -1,0 +1,34 @@
+{
+    "name": "agenciafmd/admix-leads",
+    "description": "Leads - Agência F&MD",
+    "authors": [
+        {
+            "name": "Irineu Junior",
+            "email": "irineu@fmd.ag",
+            "homepage": "http://fmd.ag/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "laravel/framework": "5.8.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/database/seeds",
+            "src/database/factories"
+        ],
+        "files": [
+            "src/Http/helpers.php"
+        ],
+        "psr-4": {
+            "Agenciafmd\\Leads\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Agenciafmd\\Leads\\Providers\\LeadServiceProvider"
+            ]
+        }
+    }
+}
