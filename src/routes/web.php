@@ -44,3 +44,6 @@ Route::prefix(config('admix.url') . '/leads')
             ->name('batchRestore')
             ->middleware('can:restore,\Agenciafmd\Leads\Lead');
     });
+
+Route::post('lead', 'FrontendController@store')
+    ->name('frontend.leads.store');
