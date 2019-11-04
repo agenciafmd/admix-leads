@@ -4,7 +4,7 @@ namespace Agenciafmd\Leads\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class LeadserviceProvider extends ServiceProvider
+class LeadServiceProvider extends ServiceProvider
 {
     public function boot()
     {
