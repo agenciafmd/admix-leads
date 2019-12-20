@@ -16,6 +16,7 @@ class LeadController extends Controller
 
         $query = QueryBuilder::for(Lead::class)
             ->defaultSorts(config('admix-leads.default_sort'))
+            ->allowedSorts($request->sort)
             ->allowedFilters((($request->filter) ? array_keys($request->get('filter')) : []));
 
         if ($request->is('*/trash')) {
