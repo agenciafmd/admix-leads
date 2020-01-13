@@ -1,7 +1,7 @@
 @extends('agenciafmd/admix::partials.crud.form')
 
 @section('form')
-    @formModel(['model' => optional($model), 'create' => route('admix.leads.store'), 'update' => route('admix.leads.update', [($model->id) ?? 0]), 'id' => 'formCrud', 'class' => 'mb-0 card-list-group card' . ((count($errors) > 0) ? ' was-validated' : '')])
+    {!! Form::bsOpen(['model' => optional($model), 'create' => route('admix.leads.store'), 'update' => route('admix.leads.update', [$model->id])]) !!}
     <div class="card-header bg-gray-lightest">
         <h3 class="card-title">
             @if(request()->is('*/create'))
@@ -20,19 +20,20 @@
         </div>
     </div>
     <ul class="list-group list-group-flush">
+
         @if (optional($model)->id)
-            @formText(['Código', 'id', null, ['disabled' => true]])
+            {!! Form::bsText('Código', 'id', null, ['disabled' => true]) !!}
         @endif
 
-        @formIsActive(['Ativo', 'is_active', null, ['required']])
+        {!! Form::bsIsActive('Ativo', 'is_active', null, ['required']) !!}
 
-        @formText(['Nome', 'name', null])
+        {!! Form::bsText('Nome', 'name', null) !!}
 
-        @formEmail(['E-mail', 'email', null, ['required']])
+        {!! Form::bsEmail('E-mail', 'email', null) !!}
 
-        @formText(['Telefone', 'phone', null, ['class' => 'mask-phone']])
+        {!! Form::bsText('Telefone', 'phone', null, ['class' => 'mask-phone']) !!}
 
-        @formTextarea(['Descrição', 'description', null])
+        {!! Form::bsTextarea('Descrição', 'description', null) !!}
     </ul>
     <div class="card-footer bg-gray-lightest text-right">
         <div class="d-flex">
@@ -43,5 +44,5 @@
             @endif
         </div>
     </div>
-    @formClose()
+    {!! Form::close() !!}
 @endsection

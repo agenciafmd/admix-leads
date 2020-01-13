@@ -25,11 +25,11 @@
 @section('batch')
     @if(request()->is('*/trash'))
         @can('restore', '\Agenciafmd\Leads\Lead')
-            @inputSelect(['batch', ['' => 'com os selecionados', route('admix.leads.batchRestore') => '- restaurar'], null, ['class' => 'js-batch-select form-control custom-select']])
+            {!! Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchRestore') => '- restaurar'], null, ['class' => 'js-batch-select form-control custom-select']) !!}
         @endcan
     @else
         @can('delete', '\Agenciafmd\Leads\Lead')
-            @inputSelect(['batch', ['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover'], null, ['class' => 'js-batch-select form-control custom-select']])
+            {!! Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover'], null, ['class' => 'js-batch-select form-control custom-select']) !!}
         @endcan
     @endif
 @endsection
@@ -37,15 +37,15 @@
 @section('filters')
     <h6 class="dropdown-header bg-gray-lightest p-2">Email</h6>
     <div class="p-2">
-        @inputText(['filter[email]', filter('email'), [
-        'class' => 'form-control form-control-sm'
-        ]])
+        {{ Form::text('filter[email]', filter('email'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
     </div>
     <h6 class="dropdown-header bg-gray-lightest p-2">Telefone</h6>
     <div class="p-2">
-        @inputText(['filter[phone]', filter('phone'), [
-        'class' => 'form-control form-control-sm'
-        ]])
+        {{ Form::text('filter[phone]', filter('phone'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
     </div>
 @endsection
 
