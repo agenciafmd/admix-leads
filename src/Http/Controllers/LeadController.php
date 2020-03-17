@@ -147,7 +147,7 @@ class LeadController extends Controller
             $sheet->setCellValue('A' . $cont, $lead->name);
             $sheet->setCellValue('B' . $cont, $lead->email);
             $sheet->setCellValue('C' . $cont, $lead->phone);
-            $sheet->setCellValue('D' . $cont, $lead->descripition);
+            $sheet->setCellValue('D' . $cont, $lead->description);
             $sheet->setCellValue('E' . $cont, $lead->created_at->format('d/m/Y'));
         }
 

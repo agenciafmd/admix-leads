@@ -60,6 +60,7 @@
                     <th>{!! column_sort('Nome', 'name') !!}</th>
                     <th>{!! column_sort('Email', 'email') !!}</th>
                     <th>{!! column_sort('Telefone', 'phone') !!}</th>
+                    <th>{!! column_sort('Data de Criação', 'created_at') !!}</th>
                     <th>{!! column_sort('Status', 'is_active') !!}</th>
                     <th></th>
                 </tr>
@@ -78,6 +79,7 @@
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->phone }}</td>
+                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
                         <td>
                             @include('agenciafmd/admix::partials.label.status', ['status' => $item->is_active])
                         </td>
