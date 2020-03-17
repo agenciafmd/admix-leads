@@ -6,6 +6,8 @@ use Agenciafmd\Leads\Http\Requests\LeadRequest;
 use Agenciafmd\Leads\Lead;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class LeadController extends Controller
