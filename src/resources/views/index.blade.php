@@ -29,7 +29,7 @@
         @endcan
     @else
         @can('delete', '\Agenciafmd\Leads\Lead')
-            {{ Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover'], null, ['class' => 'js-batch-select form-control custom-select']) }}
+            {{ Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover', route('admix.leads.batchExport') => '- exportar'], null, ['class' => 'js-batch-select form-control custom-select']) }}
         @endcan
     @endif
 @endsection

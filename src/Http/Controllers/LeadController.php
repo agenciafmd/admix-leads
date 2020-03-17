@@ -123,4 +123,36 @@ class LeadController extends Controller
 
         return ($url = session()->get('backUrl')) ? redirect($url) : redirect()->route('admix.leads.index');
     }
+    public function batchExport(Request $request)
+    {
+        $nameFile = "relatorio-leads.xlsx";
+        $nameFileFull = storage_path("relatorio-leads.xlsx");
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A1', 'Nome');
+        $sheet->setCellValue('B1', 'E-mail');
+        $sheet->setCellValue('C1', 'Telefone');
+        $sheet->setCellValue('D1', 'Descrição');
+        $sheet->setCellValue('E1', 'Data');
+
+        $leads = Lead::whereIn('id', $request->get('id', []))
+            ->get();;
+
+        foreach ($leads as $k => $lead) {
+            $cont = $k + 2;
+            $sheet->setCellValue('A' . $cont, $lead->name);
+            $sheet->setCellValue('B' . $cont, $lead->email);
+            $sheet->setCellValue('C' . $cont, $lead->phone);
+            $sheet->setCellValue('D' . $cont, $lead->descripition);
+            $sheet->setCellValue('E' . $cont, $lead->created_at->format('d/m/Y'));
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($nameFileFull);
+
+        return response()->download($nameFileFull, $nameFile);
+
+    }
 }
