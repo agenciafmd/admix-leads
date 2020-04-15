@@ -5,7 +5,6 @@ return [
     'icon' => 'icon fe-inbox',
     'sort' => 20,
     'default_sort' => [
-        '-is_active',
-        'name',
+        '-id',
     ],
 ];
