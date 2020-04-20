@@ -5,7 +5,7 @@ use Agenciafmd\Postal\Postal;
 
 $factory->define(Lead::class, function (\Faker\Generator $faker) {
 
-    $sources = Postal::pluck('name', 'slug')
+    $sources = Postal::pluck('slug')
         ->toArray();
 
     return [
