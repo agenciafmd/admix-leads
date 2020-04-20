@@ -27,6 +27,8 @@
 
         {{ Form::bsIsActive('Ativo', 'is_active', null, ['required']) }}
 
+        {{ Form::bsSelect('Origem', 'source', ['' => '-'] + $sources + config('admix-leads.sources'), null) }}
+
         {{ Form::bsText('Nome', 'name', null) }}
 
         {{ Form::bsEmail('E-mail', 'email', null) }}

@@ -10,6 +10,7 @@ class LeadRequest extends FormRequest
     {
         return [
             'is_active' => 'required|boolean',
+            'source' => 'nullable|max:150',
             'name' => 'nullable|max:150',
             'email' => 'nullable|email|max:150',
             'phone' => 'nullable|max:150',
@@ -21,6 +22,7 @@ class LeadRequest extends FormRequest
     {
         return [
             'is_active' => 'ativo',
+            'source' => 'fonte',
             'name' => 'nome',
             'phone' => 'telefone',
             'description' => 'descrição',

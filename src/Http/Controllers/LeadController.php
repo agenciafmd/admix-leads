@@ -4,6 +4,7 @@ namespace Agenciafmd\Leads\Http\Controllers;
 
 use Agenciafmd\Leads\Http\Requests\LeadRequest;
 use Agenciafmd\Leads\Lead;
+use Agenciafmd\Postal\Postal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -25,6 +26,8 @@ class LeadController extends Controller
             $query->onlyTrashed();
         }
 
+        $view['sources'] = $this->sources();
+
         $view['items'] = $query->paginate($request->get('per_page', 50));
 
         return view('agenciafmd/leads::index', $view);
@@ -33,6 +36,7 @@ class LeadController extends Controller
     public function create(Lead $lead)
     {
         $view['model'] = $lead;
+        $view['sources'] = $this->sources();
 
         return view('agenciafmd/leads::form', $view);
     }
@@ -51,6 +55,7 @@ class LeadController extends Controller
     public function show(Lead $lead)
     {
         $view['model'] = $lead;
+        $view['sources'] = $this->sources();
 
         return view('agenciafmd/leads::form', $view);
     }
@@ -58,6 +63,7 @@ class LeadController extends Controller
     public function edit(Lead $lead)
     {
         $view['model'] = $lead;
+        $view['sources'] = $this->sources();
 
         return view('agenciafmd/leads::form', $view);
     }
@@ -125,6 +131,7 @@ class LeadController extends Controller
 
         return ($url = session()->get('backUrl')) ? redirect($url) : redirect()->route('admix.leads.index');
     }
+
     public function batchExport(Request $request)
     {
         $nameFile = "relatorio-leads.xlsx";
@@ -133,22 +140,24 @@ class LeadController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setCellValue('A1', 'Nome');
-        $sheet->setCellValue('B1', 'E-mail');
-        $sheet->setCellValue('C1', 'Telefone');
-        $sheet->setCellValue('D1', 'Descrição');
-        $sheet->setCellValue('E1', 'Data');
+        $sheet->setCellValue('A1', 'Origem');
+        $sheet->setCellValue('B1', 'Nome');
+        $sheet->setCellValue('C1', 'E-mail');
+        $sheet->setCellValue('D1', 'Telefone');
+        $sheet->setCellValue('E1', 'Descrição');
+        $sheet->setCellValue('F1', 'Data');
 
         $leads = Lead::whereIn('id', $request->get('id', []))
             ->get();;
 
         foreach ($leads as $k => $lead) {
             $cont = $k + 2;
-            $sheet->setCellValue('A' . $cont, $lead->name);
-            $sheet->setCellValue('B' . $cont, $lead->email);
-            $sheet->setCellValue('C' . $cont, $lead->phone);
-            $sheet->setCellValue('D' . $cont, $lead->description);
-            $sheet->setCellValue('E' . $cont, $lead->created_at->format('d/m/Y'));
+            $sheet->setCellValue('A' . $cont, ($sources[$item->source]) ?? $item->source);
+            $sheet->setCellValue('B' . $cont, $lead->name);
+            $sheet->setCellValue('C' . $cont, $lead->email);
+            $sheet->setCellValue('D' . $cont, $lead->phone);
+            $sheet->setCellValue('E' . $cont, $lead->description);
+            $sheet->setCellValue('F' . $cont, $lead->created_at->format('d/m/Y H:i'));
         }
 
         $writer = new Xlsx($spreadsheet);
@@ -156,5 +165,11 @@ class LeadController extends Controller
 
         return response()->download($nameFileFull, $nameFile);
 
+    }
+
+    private function sources()
+    {
+        return Postal::pluck('name', 'slug')
+            ->toArray();
     }
 }

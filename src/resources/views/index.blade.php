@@ -35,6 +35,12 @@
 @endsection
 
 @section('filters')
+    <h6 class="dropdown-header bg-gray-lightest p-2">Origem</h6>
+    <div class="p-2">
+        {{ Form::select('filter[source]', ['' => '-'] + $sources + config('admix-leads.sources'), filter('source'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
+    </div>
     <h6 class="dropdown-header bg-gray-lightest p-2">Email</h6>
     <div class="p-2">
         {{ Form::text('filter[email]', filter('email'), [
@@ -57,9 +63,10 @@
                 <tr>
                     <th class="w-1 d-none d-md-table-cell">&nbsp;</th>
                     <th class="w-1">{!! column_sort('#', 'id') !!}</th>
+                    <th>{!! column_sort('Origem', 'source') !!}</th>
                     <th>{!! column_sort('Nome', 'name') !!}</th>
-                    <th>{!! column_sort('Email', 'email') !!}</th>
-                    <th>{!! column_sort('Telefone', 'phone') !!}</th>
+{{--                    <th>{!! column_sort('Email', 'email') !!}</th>--}}
+{{--                    <th>{!! column_sort('Telefone', 'phone') !!}</th>--}}
                     <th>{!! column_sort('Data de Criação', 'created_at') !!}</th>
                     <th>{!! column_sort('Status', 'is_active') !!}</th>
                     <th></th>
@@ -76,10 +83,11 @@
                             </label>
                         </td>
                         <td><span class="text-muted">{{ $item->id }}</span></td>
+                        <td>{{ ($sources[$item->source]) ?? $item->source }}</td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->email }}</td>
-                        <td>{{ $item->phone }}</td>
-                        <td>{{ $item->created_at->format('d/m/Y') }}</td>
+{{--                        <td>{{ $item->email }}</td>--}}
+{{--                        <td>{{ $item->phone }}</td>--}}
+                        <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                         <td>
                             @include('agenciafmd/admix::partials.label.status', ['status' => $item->is_active])
                         </td>

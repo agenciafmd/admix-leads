@@ -14,6 +14,7 @@ class FrontendRequest extends FormRequest
             'hp_name' => 'honeypot',
             'hp_time' => 'required|honeytime:5',
 
+            'source' => 'nullable|max:150',
             'name' => 'nullable|max:150',
             'email' => 'nullable|email|max:150',
             'phone' => 'nullable|max:150',
@@ -24,6 +25,7 @@ class FrontendRequest extends FormRequest
     public function attributes()
     {
         return [
+            'source' => 'origem',
             'name' => 'nome',
             'phone' => 'telefone',
             'description' => 'descrição',

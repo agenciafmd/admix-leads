@@ -5,6 +5,9 @@ return [
     'icon' => 'icon fe-inbox',
     'sort' => 20,
     'default_sort' => [
-        '-id',
+        '-is_active',
+        '-created_at',
+        'name',
     ],
+    'sources' => [],
 ];
