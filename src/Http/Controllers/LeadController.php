@@ -43,7 +43,7 @@ class LeadController extends Controller
 
     public function store(LeadRequest $request)
     {
-        if ($lead = Lead::create($request->all())) {
+        if ($lead = Lead::create($request->validated())) {
             flash('Item inserido com sucesso.', 'success');
         } else {
             flash('Falha no cadastro.', 'danger');
@@ -70,7 +70,7 @@ class LeadController extends Controller
 
     public function update(Lead $lead, LeadRequest $request)
     {
-        if ($lead->update($request->all())) {
+        if ($lead->update($request->validated())) {
             flash('Item atualizado com sucesso.', 'success');
         } else {
             flash('Falha na atualização.', 'danger');
