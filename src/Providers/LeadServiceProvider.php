@@ -2,6 +2,7 @@
 
 namespace Agenciafmd\Leads\Providers;
 
+use Agenciafmd\Leads\Lead;
 use Illuminate\Support\ServiceProvider;
 
 class LeadServiceProvider extends ServiceProvider
@@ -11,6 +12,8 @@ class LeadServiceProvider extends ServiceProvider
         $this->providers();
 
         $this->setMenu();
+
+        $this->setSearch();
 
         $this->loadViews();
 
@@ -40,6 +43,12 @@ class LeadServiceProvider extends ServiceProvider
                 'view' => 'agenciafmd/leads::partials.menus.item',
                 'ord' => config('admix-leads.sort', 1),
             ]);
+    }
+
+    protected function setSearch()
+    {
+        $this->app->make('admix-search')
+            ->registerModel(Lead::class, 'name', 'email');
     }
 
     protected function loadViews()
