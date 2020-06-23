@@ -134,6 +134,7 @@ class LeadController extends Controller
 
     public function batchExport(Request $request)
     {
+        $sources = $this->sources();
         $nameFile = "relatorio-leads.xlsx";
         $nameFileFull = storage_path("relatorio-leads.xlsx");
 
@@ -148,11 +149,12 @@ class LeadController extends Controller
         $sheet->setCellValue('F1', 'Data');
 
         $leads = Lead::whereIn('id', $request->get('id', []))
-            ->get();;
+            ->get();
 
+        // TODO: refatorar com each de collection
         foreach ($leads as $k => $lead) {
             $cont = $k + 2;
-            $sheet->setCellValue('A' . $cont, ($sources[$item->source]) ?? $item->source);
+            $sheet->setCellValue('A' . $cont, ($sources[$lead->source]) ?? $lead->source);
             $sheet->setCellValue('B' . $cont, $lead->name);
             $sheet->setCellValue('C' . $cont, $lead->email);
             $sheet->setCellValue('D' . $cont, $lead->phone);
