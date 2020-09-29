@@ -12,19 +12,17 @@
     }
   ],
   "require": {
-    "laravel/framework": "^7.0",
+    "laravel/framework": "^8.0",
     "phpoffice/phpspreadsheet": "^1.11"
   },
   "autoload": {
-    "classmap": [
-      "src/database/seeds",
-      "src/database/factories"
-    ],
     "files": [
       "src/Http/helpers.php"
     ],
     "psr-4": {
-      "Agenciafmd\\Leads\\": "src/"
+      "Agenciafmd\\Leads\\": "src/",
+      "Agenciafmd\\Leads\\Database\\Factories\\": "database/factories/",
+      "Agenciafmd\\Leads\\Database\\Seeders\\": "database/seeders/"
     }
   },
   "extra": {

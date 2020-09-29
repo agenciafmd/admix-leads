@@ -11,14 +11,34 @@ class FrontendRequest extends FormRequest
     public function rules()
     {
         return [
-            'hp_name' => ['honeypot'],
-            'hp_time' => ['required', 'honeytime:5'],
+            'hp_name' => [
+                'honeypot',
+            ],
+            'hp_time' => [
+                'required',
+                'honeytime:5',
+            ],
 
-            'source' => ['nullable', 'max:150'],
-            'name' => ['nullable', 'max:150'],
-            'email' => ['nullable', 'email', 'max:150'],
-            'phone' => ['nullable', 'max:150'],
-            'description' => ['nullable'],
+            'source' => [
+                'nullable',
+                'max:150',
+            ],
+            'name' => [
+                'nullable',
+                'max:150',
+            ],
+            'email' => [
+                'nullable',
+                'email',
+                'max:150',
+            ],
+            'phone' => [
+                'nullable',
+                'max:150',
+            ],
+            'description' => [
+                'nullable',
+            ],
         ];
     }
 

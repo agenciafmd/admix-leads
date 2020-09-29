@@ -2,13 +2,17 @@
 
 namespace Agenciafmd\Leads\Http\Controllers;
 
+use Agenciafmd\Admix\Http\Filters\GreaterThanFilter;
+use Agenciafmd\Admix\Http\Filters\LowerThanFilter;
 use Agenciafmd\Leads\Http\Requests\LeadRequest;
-use Agenciafmd\Leads\Lead;
-use Agenciafmd\Postal\Postal;
+use Agenciafmd\Leads\Models\Lead;
+use Agenciafmd\Postal\Models\Postal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Settings;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class LeadController extends Controller
@@ -20,7 +24,13 @@ class LeadController extends Controller
         $query = QueryBuilder::for(Lead::class)
             ->defaultSorts(config('admix-leads.default_sort'))
             ->allowedSorts($request->sort)
-            ->allowedFilters((($request->filter) ? array_keys($request->get('filter')) : []));
+            ->allowedFilters(array_merge((($request->filter) ? array_keys(array_diff_key($request->filter, array_flip(['id', 'is_active', 'source', 'created_at_gt', 'created_at_lt']))) : []), [
+                AllowedFilter::exact('id'),
+                AllowedFilter::exact('is_active'),
+                AllowedFilter::exact('source'),
+                AllowedFilter::custom('created_at_gt', new GreaterThanFilter),
+                AllowedFilter::custom('created_at_lt', new LowerThanFilter),
+            ]));
 
         if ($request->is('*/trash')) {
             $query->onlyTrashed();
@@ -134,10 +144,13 @@ class LeadController extends Controller
 
     public function batchExport(Request $request)
     {
+        set_time_limit(60*2);
+
         $sources = $this->sources();
         $nameFile = "relatorio-leads.xlsx";
-        $nameFileFull = storage_path("relatorio-leads.xlsx");
+        $nameFileFull = storage_path($nameFile);
 
+        Settings::setCache(app('cache.store'));
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
@@ -149,7 +162,7 @@ class LeadController extends Controller
         $sheet->setCellValue('F1', 'Data');
 
         $leads = Lead::whereIn('id', $request->get('id', []))
-            ->get();
+            ->cursor();
 
         // TODO: refatorar com each de collection
         foreach ($leads as $k => $lead) {
@@ -166,7 +179,6 @@ class LeadController extends Controller
         $writer->save($nameFileFull);
 
         return response()->download($nameFileFull, $nameFile);
-
     }
 
     private function sources()

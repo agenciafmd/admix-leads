@@ -1,7 +1,9 @@
 <?php
 
-namespace Agenciafmd\Leads;
+namespace Agenciafmd\Leads\Models;
 
+use Agenciafmd\Leads\Database\Factories\LeadFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
@@ -11,10 +13,14 @@ use Spatie\Searchable\SearchResult;
 
 class Lead extends Model implements AuditableContract, Searchable
 {
-    use SoftDeletes, Auditable;
+    use SoftDeletes, HasFactory, Auditable;
 
     protected $guarded = [
         //
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     public $searchableType;
@@ -47,5 +53,10 @@ class Lead extends Model implements AuditableContract, Searchable
         foreach ($sorts as $sort) {
             $query->orderBy($sort['field'], $sort['direction']);
         }
+    }
+
+    protected static function newFactory()
+    {
+        return LeadFactory::new();
     }
 }

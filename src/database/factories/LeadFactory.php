@@ -1,20 +1,28 @@
 <?php
 
-use Agenciafmd\Leads\Lead;
-use Agenciafmd\Postal\Postal;
+namespace Agenciafmd\Leads\Database\Factories;
 
-$factory->define(Lead::class, function (\Faker\Generator $faker) {
+use Agenciafmd\Leads\Models\Lead;
+use Agenciafmd\Postal\Models\Postal;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-    $sources = Postal::pluck('slug')
-        ->toArray();
+class LeadFactory extends Factory
+{
+    protected $model = Lead::class;
 
-    return [
-        'is_active' => $faker->optional(0.3, 1)
-            ->randomElement([0]),
-        'source' => $faker->randomElement($sources),
-        'name' => $faker->name,
-        'email' => $faker->email,
-        'phone' => $faker->phoneNumber,
-        'description' => $faker->text,
-    ];
-});
+    public function definition()
+    {
+        $sources = Postal::pluck('slug')
+            ->toArray();
+
+        return [
+            'is_active' => $this->faker->optional(0.3, 1)
+                ->randomElement([0]),
+            'source' => $this->faker->randomElement($sources),
+            'name' => $this->faker->name,
+            'email' => $this->faker->email,
+            'phone' => $this->faker->phoneNumber,
+            'description' => $this->faker->text,
+        ];
+    }
+}

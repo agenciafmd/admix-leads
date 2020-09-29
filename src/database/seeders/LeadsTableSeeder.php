@@ -1,26 +1,29 @@
 <?php
 
-use Agenciafmd\Leads\Lead;
+namespace Agenciafmd\Leads\Database\Seeders;
+
+use Agenciafmd\Leads\Models\Lead;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 class LeadsTableSeeder extends Seeder
 {
-    protected $total = 150;
+    protected $total = 150000;
 
     public function run()
     {
-        Lead::withTrashed()
-            ->get()->each->forceDelete();
+//        Lead::withTrashed()
+//            ->get()->each->forceDelete();
 
-        DB::table('media')
-            ->where('model_type', 'Agenciafmd\\Leads\\Lead')
-            ->delete();
+        DB::table('leads')
+            ->truncate();
 
         $this->command->getOutput()
             ->progressStart($this->total);
-        factory(Lead::class, $this->total)
+
+        Lead::factory($this->total)
             ->create();
+
         $this->command->getOutput()
             ->progressFinish();
     }

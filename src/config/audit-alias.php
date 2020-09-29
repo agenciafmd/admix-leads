@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'Agenciafmd\Leads\Lead' => config('admix-leads.name', 'Leads'),
+    'Agenciafmd\Leads\Models\Lead' => config('admix-leads.name', 'Leads'),
 ];

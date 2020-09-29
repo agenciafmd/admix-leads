@@ -11,12 +11,30 @@ class LeadRequest extends FormRequest
     public function rules()
     {
         return [
-            'is_active' => ['required', 'boolean'],
-            'source' => ['nullable', 'max:150'],
-            'name' => ['nullable', 'max:150'],
-            'email' => ['nullable', 'email', 'max:150'],
-            'phone' => ['nullable', 'max:150'],
-            'description' => ['nullable'],
+            'is_active' => [
+                'required',
+                'boolean',
+            ],
+            'source' => [
+                'nullable',
+                'max:150',
+            ],
+            'name' => [
+                'nullable',
+                'max:150',
+            ],
+            'email' => [
+                'nullable',
+                'email',
+                'max:150',
+            ],
+            'phone' => [
+                'nullable',
+                'max:150',
+            ],
+            'description' => [
+                'nullable',
+            ],
         ];
     }
 

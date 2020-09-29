@@ -3,7 +3,7 @@
 namespace Agenciafmd\Leads\Http\Controllers;
 
 use Agenciafmd\Leads\Http\Requests\FrontendRequest;
-use Agenciafmd\Leads\Lead;
+use Agenciafmd\Leads\Models\Lead;
 use App\Http\Controllers\Controller;
 
 class FrontendController extends Controller

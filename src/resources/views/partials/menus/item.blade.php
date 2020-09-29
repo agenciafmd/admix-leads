@@ -1,4 +1,4 @@
-@if (!((admix_cannot('view', '\Agenciafmd\Leads\Lead'))))
+@can('view', '\Agenciafmd\Leads\Models\Lead')
     <li class="nav-item">
         <a class="nav-link {{ (admix_is_active(route('admix.leads.index'))) ? 'active' : '' }}"
            href="{{ route('admix.leads.index') }}"
@@ -11,4 +11,4 @@
             </span>
         </a>
     </li>
-@endif
+@endcan

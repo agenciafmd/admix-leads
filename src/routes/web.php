@@ -1,51 +1,43 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| ADMIX Routes
-|--------------------------------------------------------------------------
-*/
+use Agenciafmd\Leads\Http\Controllers\LeadController;
+use Agenciafmd\Leads\Models\Lead;
 
-Route::prefix(config('admix.url') . '/leads')
-    ->name('admix.leads.')
-    ->middleware(['auth:admix-web'])
-    ->group(function () {
-        Route::get('', 'LeadController@index')
-            ->name('index')
-            ->middleware('can:view,\Agenciafmd\Leads\Lead');
-        Route::get('trash', 'LeadController@index')
-            ->name('trash')
-            ->middleware('can:restore,\Agenciafmd\Leads\Lead');
-        Route::get('create', 'LeadController@create')
-            ->name('create')
-            ->middleware('can:create,\Agenciafmd\Leads\Lead');
-        Route::post('', 'LeadController@store')
-            ->name('store')
-            ->middleware('can:create,\Agenciafmd\Leads\Lead');
-        Route::get('{lead}', 'LeadController@show')
-            ->name('show')
-            ->middleware('can:view,\Agenciafmd\Leads\Lead');
-        Route::get('{lead}/edit', 'LeadController@edit')
-            ->name('edit')
-            ->middleware('can:update,\Agenciafmd\Leads\Lead');
-        Route::put('{lead}', 'LeadController@update')
-            ->name('update')
-            ->middleware('can:update,\Agenciafmd\Leads\Lead');
-        Route::delete('destroy/{lead}', 'LeadController@destroy')
-            ->name('destroy')
-            ->middleware('can:delete,\Agenciafmd\Leads\Lead');
-        Route::post('{id}/restore', 'LeadController@restore')
-            ->name('restore')
-            ->middleware('can:restore,\Agenciafmd\Leads\Lead');
-        Route::post('batchDestroy', 'LeadController@batchDestroy')
-            ->name('batchDestroy')
-            ->middleware('can:delete,\Agenciafmd\Leads\Lead');
-        Route::post('batchRestore', 'LeadController@batchRestore')
-            ->name('batchRestore')
-            ->middleware('can:restore,\Agenciafmd\Leads\Lead');
-        Route::post('batchExport', 'LeadController@batchExport')
-            ->name('batchExport');
-    });
+Route::get('leads', [LeadController::class, 'index'])
+    ->name('admix.leads.index')
+    ->middleware('can:view,' . Lead::class);
+Route::get('leads/trash', [LeadController::class, 'index'])
+    ->name('admix.leads.trash')
+    ->middleware('can:restore,' . Lead::class);
+Route::get('leads/create', [LeadController::class, 'create'])
+    ->name('admix.leads.create')
+    ->middleware('can:create,' . Lead::class);
+Route::post('leads', [LeadController::class, 'store'])
+    ->name('admix.leads.store')
+    ->middleware('can:create,' . Lead::class);
+Route::get('leads/{lead}', [LeadController::class, 'show'])
+    ->name('admix.leads.show')
+    ->middleware('can:view,' . Lead::class);
+Route::get('leads/{lead}/edit', [LeadController::class, 'edit'])
+    ->name('admix.leads.edit')
+    ->middleware('can:update,' . Lead::class);
+Route::put('leads/{lead}', [LeadController::class, 'update'])
+    ->name('admix.leads.update')
+    ->middleware('can:update,' . Lead::class);
+Route::delete('leads/destroy/{lead}', [LeadController::class, 'destroy'])
+    ->name('admix.leads.destroy')
+    ->middleware('can:delete,' . Lead::class);
+Route::post('leads/{id}/restore', [LeadController::class, 'restore'])
+    ->name('admix.leads.restore')
+    ->middleware('can:restore,' . Lead::class);
+Route::post('leads/batchDestroy', [LeadController::class, 'batchDestroy'])
+    ->name('admix.leads.batchDestroy')
+    ->middleware('can:delete,' . Lead::class);
+Route::post('leads/batchRestore', [LeadController::class, 'batchRestore'])
+    ->name('admix.leads.batchRestore')
+    ->middleware('can:restore,' . Lead::class);
+Route::post('leads/batchExport', [LeadController::class, 'batchExport'])
+    ->name('admix.leads.batchExport');
 
-Route::post('lead', 'FrontendController@store')
-    ->name('frontend.leads.store');
+//Route::post('leads', 'FrontendController@store')
+//    ->name('frontend.leads.store');

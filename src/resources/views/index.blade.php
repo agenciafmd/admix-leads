@@ -13,10 +13,10 @@
     @if(request()->is('*/trash'))
         @include('agenciafmd/admix::partials.btn.back', ['url' => route('admix.leads.index')])
     @else
-        @can('create', '\Agenciafmd\Leads\Lead')
+        @can('create', \Agenciafmd\Leads\Models\Lead::class)
             @include('agenciafmd/admix::partials.btn.create', ['url' => route('admix.leads.create'), 'label' => config('admix-leads.name')])
         @endcan
-        @can('restore', '\Agenciafmd\Leads\Lead')
+        @can('restore', \Agenciafmd\Leads\Models\Lead::class)
             @include('agenciafmd/admix::partials.btn.trash', ['url' => route('admix.leads.trash')])
         @endcan
     @endif
@@ -24,35 +24,24 @@
 
 @section('batch')
     @if(request()->is('*/trash'))
-        @can('restore', '\Agenciafmd\Leads\Lead')
-            {{ Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchRestore') => '- restaurar'], null, ['class' => 'js-batch-select form-control custom-select']) }}
+        @can('restore', \Agenciafmd\Leads\Models\Lead::class)
+            <x-admix::batchs.select name="batch" selected=""
+                                    :options="['' => 'com os selecionados', route('admix.leads.batchRestore') => '- restaurar']"/>
         @endcan
     @else
-        @can('delete', '\Agenciafmd\Leads\Lead')
-            {{ Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover', route('admix.leads.batchExport') => '- exportar'], null, ['class' => 'js-batch-select form-control custom-select']) }}
+        @can('delete', \Agenciafmd\Leads\Models\Lead::class)
+            <x-admix::batchs.select name="batch" selected=""
+                                    :options="['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover', route('admix.leads.batchExport') => '- exportar']"/>
         @endcan
     @endif
 @endsection
 
 @section('filters')
-    <h6 class="dropdown-header bg-gray-lightest p-2">Origem</h6>
-    <div class="p-2">
-        {{ Form::select('filter[source]', ['' => '-'] + $sources + config('admix-leads.sources'), filter('source'), [
-                'class' => 'form-control form-control-sm'
-            ]) }}
-    </div>
-    <h6 class="dropdown-header bg-gray-lightest p-2">Email</h6>
-    <div class="p-2">
-        {{ Form::text('filter[email]', filter('email'), [
-                'class' => 'form-control form-control-sm'
-            ]) }}
-    </div>
-    <h6 class="dropdown-header bg-gray-lightest p-2">Telefone</h6>
-    <div class="p-2">
-        {{ Form::text('filter[phone]', filter('phone'), [
-                'class' => 'form-control form-control-sm'
-            ]) }}
-    </div>
+    <x-admix::filters.select label="origem" name="source"
+                             :options="['' => '-'] + $sources + config('admix-leads.sources')"/>
+    <x-admix::filters.input label="email" name="email"/>
+    <x-admix::filters.input label="telefone" name="phone"/>
+    <x-admix::filters.daterange label="criado" name="created_at"/>
 @endsection
 
 @section('table')
@@ -63,12 +52,12 @@
                 <tr>
                     <th class="w-1 d-none d-md-table-cell">&nbsp;</th>
                     <th class="w-1">{!! column_sort('#', 'id') !!}</th>
-                    <th>{!! column_sort('Origem', 'source') !!}</th>
+                    {{--                    <th>{!! column_sort('Origem', 'source') !!}</th>--}}
                     <th>{!! column_sort('Nome', 'name') !!}</th>
-{{--                    <th>{!! column_sort('Email', 'email') !!}</th>--}}
-{{--                    <th>{!! column_sort('Telefone', 'phone') !!}</th>--}}
+                    <th>{!! column_sort('Email', 'email') !!}</th>
+                    {{--                    <th>{!! column_sort('Telefone', 'phone') !!}</th>--}}
                     <th>{!! column_sort('Data de Criação', 'created_at') !!}</th>
-                    <th>{!! column_sort('Status', 'is_active') !!}</th>
+                    <th class="px-0">{!! column_sort('Ativo', 'is_active') !!}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -83,13 +72,13 @@
                             </label>
                         </td>
                         <td><span class="text-muted">{{ $item->id }}</span></td>
-                        <td>{{ ($sources[$item->source]) ?? $item->source }}</td>
+                        {{--                        <td>{{ ($sources[$item->source]) ?? $item->source }}</td>--}}
                         <td>{{ $item->name }}</td>
-{{--                        <td>{{ $item->email }}</td>--}}
-{{--                        <td>{{ $item->phone }}</td>--}}
+                        <td>{{ $item->email }}</td>
+                        {{--                        <td>{{ $item->phone }}</td>--}}
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
-                        <td>
-                            @include('agenciafmd/admix::partials.label.status', ['status' => $item->is_active])
+                        <td class="px-0">
+                            @livewire('admix::is-active', ['myModel' => get_class($item), 'myId' => $item->id])
                         </td>
                         @if(request()->is('*/trash'))
                             <td class="w-1 text-right">
@@ -102,11 +91,10 @@
                                         <i class="icon fe-more-vertical text-muted"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-right">
-                                        @include('agenciafmd/admix::partials.btn.show', ['url' => route('admix.leads.show', $item->id)])
-                                        @can('update', '\Agenciafmd\Leads\Lead')
+                                        @can('update', \Agenciafmd\Leads\Models\Lead::class)
                                             @include('agenciafmd/admix::partials.btn.edit', ['url' => route('admix.leads.edit', $item->id)])
                                         @endcan
-                                        @can('delete', '\Agenciafmd\Leads\Lead')
+                                        @can('delete', \Agenciafmd\Leads\Models\Lead::class)
                                             @include('agenciafmd/admix::partials.btn.remove', ['url' => route('admix.leads.destroy', $item->id)])
                                         @endcan
                                     </div>
