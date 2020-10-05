@@ -1,22 +1,18 @@
 <?php
 
-namespace Agenciafmd\Leads\Database\Seeders;
+namespace Database\Seeders;
 
 use Agenciafmd\Leads\Models\Lead;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class LeadsTableSeeder extends Seeder
 {
-    protected $total = 150000;
+    protected int $total = 150;
 
     public function run()
     {
-//        Lead::withTrashed()
-//            ->get()->each->forceDelete();
-
-        DB::table('leads')
-            ->truncate();
+        Lead::withTrashed()
+            ->get()->each->forceDelete();
 
         $this->command->getOutput()
             ->progressStart($this->total);

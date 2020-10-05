@@ -1,6 +1,6 @@
 <?php
 
-namespace Agenciafmd\Leads\Database\Factories;
+namespace Database\Factories;
 
 use Agenciafmd\Leads\Models\Lead;
 use Agenciafmd\Postal\Models\Postal;
