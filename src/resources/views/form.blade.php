@@ -1,35 +1,43 @@
 @extends('agenciafmd/admix::partials.crud.form')
 
 @section('form')
-    <x-admix::cards.form title="{{ config('admix-leads.name') }}"
-                         :create="route('admix.leads.store')"
-                         :update="route('admix.leads.update', ['lead' => ($model->id) ?? 0])">
-        <x-admix::forms.list-group>
-            <x-admix::forms.group label="ativo" for="is_active">
-                <x-admix::forms.boolean name="is_active" required="required" :selected="$model->is_active ?? ''"/>
-            </x-admix::forms.group>
+    {{ Form::bsOpen(['model' => optional($model), 'create' => route('admix.leads.store'), 'update' => route('admix.leads.update', ['lead' => ($model->id) ?? 0])]) }}
+    <div class="card-header bg-gray-lightest">
+        <h3 class="card-title">
+            @if(request()->is('*/create'))
+                Criar
+            @elseif(request()->is('*/edit'))
+                Editar
+            @endif
+            {{ config('admix-leads.name') }}
+        </h3>
+        <div class="card-options">
+            @include('agenciafmd/admix::partials.btn.save')
+        </div>
+    </div>
+    <ul class="list-group list-group-flush">
 
-            <x-admix::forms.group label="origem" for="source">
-                <x-admix::forms.select name="source" :options="['' => '-'] + $sources + config('admix-leads.sources')"
-                                       :selected="$model->source ?? ''"/>
-            </x-admix::forms.group>
+        @if (optional($model)->id)
+            {{ Form::bsText('Código', 'id', null, ['disabled' => true]) }}
+        @endif
 
-            <x-admix::forms.group label="nome" for="name">
-                <x-admix::forms.input name="name" :value="$model->name ?? ''"/>
-            </x-admix::forms.group>
+        {{ Form::bsIsActive('Ativo', 'is_active', null, ['required']) }}
 
-            <x-admix::forms.group label="email" for="email">
-                <x-admix::forms.email name="email" :value="$model->email ?? ''"/>
-            </x-admix::forms.group>
+        {{ Form::bsSelect('Origem', 'source', ['' => '-'] + $sources + config('admix-leads.sources'), null) }}
 
-            <x-admix::forms.group label="telefone" for="phone">
-                <x-admix::forms.input name="phone" class="mask-phone" :value="$model->phone ?? ''"/>
-            </x-admix::forms.group>
+        {{ Form::bsText('Nome', 'name', null) }}
 
-            <x-admix::forms.group label="descrição" for="description" multiple="true">
-                <x-admix::forms.mde name="description">{{ $model->description ?? null }}</x-admix::forms.mde>
-            </x-admix::forms.group>
+        {{ Form::bsEmail('E-mail', 'email', null) }}
 
-        </x-admix::forms.list-group>
-    </x-admix::cards.form>
+        {{ Form::bsText('Telefone', 'phone', null, ['class' => 'mask-phone']) }}
+
+        {{ Form::bsTextarea('Descrição', 'description', null) }}
+    </ul>
+    <div class="card-footer bg-gray-lightest text-right">
+        <div class="d-flex">
+            @include('agenciafmd/admix::partials.btn.back')
+            @include('agenciafmd/admix::partials.btn.save')
+        </div>
+    </div>
+    {{ Form::close() }}
 @endsection

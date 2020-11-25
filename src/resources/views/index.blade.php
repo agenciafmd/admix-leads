@@ -25,23 +25,46 @@
 @section('batch')
     @if(request()->is('*/trash'))
         @can('restore', \Agenciafmd\Leads\Models\Lead::class)
-            <x-admix::batchs.select name="batch" selected=""
-                                    :options="['' => 'com os selecionados', route('admix.leads.batchRestore') => '- restaurar']"/>
+            {{ Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchRestore') => '- restaurar'], null, ['class' => 'js-batch-select form-control custom-select']) }}
         @endcan
     @else
         @can('delete', \Agenciafmd\Leads\Models\Lead::class)
-            <x-admix::batchs.select name="batch" selected=""
-                                    :options="['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover', route('admix.leads.batchExport') => '- exportar']"/>
+            {{ Form::select('batch', ['' => 'com os selecionados', route('admix.leads.batchDestroy') => '- remover', route('admix.leads.batchExport') => '- exportar'], null, ['class' => 'js-batch-select form-control custom-select']) }}
         @endcan
     @endif
 @endsection
 
 @section('filters')
-    <x-admix::filters.select label="origem" name="source"
-                             :options="['' => '-'] + $sources + config('admix-leads.sources')"/>
-    <x-admix::filters.input label="email" name="email"/>
-    <x-admix::filters.input label="telefone" name="phone"/>
-    <x-admix::filters.daterange label="criado" name="created_at"/>
+    <h6 class="dropdown-header bg-gray-lightest p-2">Origem</h6>
+    <div class="p-2">
+        {{ Form::select('filter[source]', ['' => '-'] + $sources + config('admix-leads.sources'), filter('source'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
+    </div>
+    <h6 class="dropdown-header bg-gray-lightest p-2">Email</h6>
+    <div class="p-2">
+        {{ Form::text('filter[email]', filter('email'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
+    </div>
+    <h6 class="dropdown-header bg-gray-lightest p-2">Telefone</h6>
+    <div class="p-2">
+        {{ Form::text('filter[phone]', filter('phone'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
+    </div>
+    <h6 class="dropdown-header bg-gray-lightest p-2">A partir</h6>
+    <div class="p-2"> <!-- TODO Datetime range picker -->
+        {{ Form::date('filter[created_at_gt]', filter('created_at_gt'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
+    </div>
+    <h6 class="dropdown-header bg-gray-lightest p-2">Até</h6>
+    <div class="p-2">
+        {{ Form::date('filter[created_at_lt]', filter('created_at_lt'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
+    </div>
 @endsection
 
 @section('table')
