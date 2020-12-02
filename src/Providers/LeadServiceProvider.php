@@ -10,12 +10,12 @@ class LeadServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->providers();
-
-        $this->setMenu();
-
+        
         $this->setSearch();
 
         $this->loadMigrations();
+
+        $this->publish();
     }
 
     protected function providers()
@@ -23,15 +23,6 @@ class LeadServiceProvider extends ServiceProvider
         $this->app->register(AuthServiceProvider::class);
         $this->app->register(BladeServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
-    }
-
-    protected function setMenu()
-    {
-        $this->app->make('admix-menu')
-            ->push((object)[
-                'view' => 'agenciafmd/leads::partials.menus.item',
-                'ord' => config('admix-leads.sort', 1),
-            ]);
     }
 
     protected function setSearch()
@@ -55,5 +46,13 @@ class LeadServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../config/admix-leads.php', 'admix-leads');
         $this->mergeConfigFrom(__DIR__ . '/../config/gate.php', 'gate');
         $this->mergeConfigFrom(__DIR__ . '/../config/audit-alias.php', 'audit-alias');
+    }
+
+    protected function publish()
+    {
+        $this->publishes([
+            __DIR__ . '/../database/factories/LeadFactory.php.stub' => base_path('database/factories/LeadFactory.php'),
+            __DIR__ . '/../database/seeders/LeadsTableSeeder.php.stub' => base_path('database/seeders/LeadsTableSeeder.php'),
+        ], 'admix-leads:seeds');
     }
 }

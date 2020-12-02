@@ -8,6 +8,8 @@ class BladeServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->setMenu();
+
         $this->loadViews();
 
         $this->loadTranslations();
@@ -18,6 +20,15 @@ class BladeServiceProvider extends ServiceProvider
     public function register()
     {
         //
+    }
+
+    protected function setMenu()
+    {
+        $this->app->make('admix-menu')
+            ->push((object)[
+                'view' => 'agenciafmd/leads::partials.menus.item',
+                'ord' => config('admix-leads.sort', 1),
+            ]);
     }
 
     protected function loadViews()

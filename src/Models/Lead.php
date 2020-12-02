@@ -2,7 +2,7 @@
 
 namespace Agenciafmd\Leads\Models;
 
-use Agenciafmd\Leads\Database\Factories\LeadFactory;
+use Database\Factories\LeadFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

@@ -20,9 +20,7 @@
       "src/Http/helpers.php"
     ],
     "psr-4": {
-      "Agenciafmd\\Leads\\": "src/",
-      "Database\\Factories\\": "src/database/factories/",
-      "Database\\Seeders\\": "src/database/seeders/"
+      "Agenciafmd\\Leads\\": "src/"
     }
   },
   "extra": {

@@ -11,8 +11,8 @@ class LeadsTableSeeder extends Seeder
 
     public function run()
     {
-        Lead::withTrashed()
-            ->get()->each->forceDelete();
+        Lead::query()
+            ->truncate();
 
         $this->command->getOutput()
             ->progressStart($this->total);
