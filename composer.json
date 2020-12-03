@@ -1,33 +1,33 @@
 {
-  "name": "agenciafmd/admix-leads",
-  "description": "Leads - Agência F&MD",
-  "homepage": "https://github.com/agenciafmd/admix-leads",
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Irineu Junior",
-      "email": "irineu@fmd.ag",
-      "homepage": "https://fmd.ag/",
-      "role": "Developer"
-    }
-  ],
-  "require": {
-    "laravel/framework": "^8.0",
-    "phpoffice/phpspreadsheet": "^1.11"
-  },
-  "autoload": {
-    "files": [
-      "src/Http/helpers.php"
+    "name": "agenciafmd/admix-leads",
+    "description": "Leads - Agência F&MD",
+    "homepage": "https://github.com/agenciafmd/admix-leads",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Irineu Junior",
+            "email": "irineu@fmd.ag",
+            "homepage": "https://fmd.ag/",
+            "role": "Developer"
+        }
     ],
-    "psr-4": {
-      "Agenciafmd\\Leads\\": "src/"
+    "require": {
+        "laravel/framework": "^8.0",
+        "rap2hpoutre/fast-excel": "^2.2"
+    },
+    "autoload": {
+        "files": [
+            "src/Http/helpers.php"
+        ],
+        "psr-4": {
+            "Agenciafmd\\Leads\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Agenciafmd\\Leads\\Providers\\LeadServiceProvider"
+            ]
+        }
     }
-  },
-  "extra": {
-    "laravel": {
-      "providers": [
-        "Agenciafmd\\Leads\\Providers\\LeadServiceProvider"
-      ]
-    }
-  }
 }

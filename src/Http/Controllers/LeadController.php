@@ -9,11 +9,10 @@ use Agenciafmd\Leads\Models\Lead;
 use Agenciafmd\Postal\Models\Postal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use PhpOffice\PhpSpreadsheet\Settings;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class LeadController extends Controller
 {
@@ -142,43 +141,23 @@ class LeadController extends Controller
         return ($url = session()->get('backUrl')) ? redirect($url) : redirect()->route('admix.leads.index');
     }
 
-    public function batchExport(Request $request)
+    public function batchExport($all = null, Request $request)
     {
-        set_time_limit(60*2);
-
-        $sources = $this->sources();
-        $nameFile = "relatorio-leads.xlsx";
-        $nameFileFull = storage_path($nameFile);
-
-        Settings::setCache(app('cache.store'));
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        $sheet->setCellValue('A1', 'Origem');
-        $sheet->setCellValue('B1', 'Nome');
-        $sheet->setCellValue('C1', 'E-mail');
-        $sheet->setCellValue('D1', 'Telefone');
-        $sheet->setCellValue('E1', 'Descrição');
-        $sheet->setCellValue('F1', 'Data');
-
-        $leads = Lead::whereIn('id', $request->get('id', []))
-            ->cursor();
-
-        // TODO: refatorar com each de collection
-        foreach ($leads as $k => $lead) {
-            $cont = $k + 2;
-            $sheet->setCellValue('A' . $cont, ($sources[$lead->source]) ?? $lead->source);
-            $sheet->setCellValue('B' . $cont, $lead->name);
-            $sheet->setCellValue('C' . $cont, $lead->email);
-            $sheet->setCellValue('D' . $cont, $lead->phone);
-            $sheet->setCellValue('E' . $cont, $lead->description);
-            $sheet->setCellValue('F' . $cont, $lead->created_at->format('d/m/Y H:i'));
+        $query = Lead::query()
+            ->select([
+                'id AS Código',
+                'source AS Origem',
+                'name AS Nome',
+                'email AS E-mail',
+                'phone AS Telefone',
+                'description AS Descrição',
+                DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y %H:%i") AS Data')]);
+        if (!$all) {
+            $query->whereIn('id', $request->get('id', []));
         }
+        $leads = $query->get();
 
-        $writer = new Xlsx($spreadsheet);
-        $writer->save($nameFileFull);
-
-        return response()->download($nameFileFull, $nameFile);
+        return (new FastExcel($leads))->download('relatorio-leads.xlsx');
     }
 
     private function sources()

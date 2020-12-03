@@ -36,7 +36,7 @@ Route::post('leads/batchDestroy', [LeadController::class, 'batchDestroy'])
 Route::post('leads/batchRestore', [LeadController::class, 'batchRestore'])
     ->name('admix.leads.batchRestore')
     ->middleware('can:restore,' . Lead::class);
-Route::post('leads/batchExport', [LeadController::class, 'batchExport'])
+Route::post('leads/batchExport/{all?}', [LeadController::class, 'batchExport'])
     ->name('admix.leads.batchExport');
 
 //Route::post('leads', 'FrontendController@store')
