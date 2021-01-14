@@ -1,8 +1,8 @@
-@can('view', '\Agenciafmd\Leads\Models\Lead')
+@can('view', \Agenciafmd\Leads\Models\Lead::class)
     <li class="nav-item">
-        <a class="nav-link {{ (admix_is_active(route('admix.leads.index'))) ? 'active' : '' }}"
+        <a class="nav-link  {{ (Str::startsWith(request()->route()->getName(), 'admix.leads')) ? 'active' : '' }}"
            href="{{ route('admix.leads.index') }}"
-           aria-expanded="{{ (admix_is_active(route('admix.leads.index'))) ? 'true' : 'false' }}">
+           aria-expanded=" {{ (Str::startsWith(request()->route()->getName(), 'admix.leads')) ? 'true' : 'false' }}">
             <span class="nav-icon">
                 <i class="icon {{ config('admix-leads.icon') }}"></i>
             </span>
