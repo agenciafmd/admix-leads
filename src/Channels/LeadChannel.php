@@ -12,11 +12,11 @@ class LeadChannel
         $lines = collect($notification->data['introLines']);
 
         $data['source'] = $notifiable->slug;
-
         $data['name'] = '';
         $data['email'] = '';
         $data['phone'] = '';
         $data['message'] = '';
+
         foreach ($lines as $line) {
             $line = str_replace(['*'], '', $line);
 
