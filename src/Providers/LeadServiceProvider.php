@@ -53,6 +53,6 @@ class LeadServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/factories/LeadFactory.php.stub' => base_path('database/factories/LeadFactory.php'),
             __DIR__ . '/../database/seeders/LeadsTableSeeder.php.stub' => base_path('database/seeders/LeadsTableSeeder.php'),
-        ], 'admix-leads:seeds');
+        ], 'admix-leads:seeders');
     }
 }
