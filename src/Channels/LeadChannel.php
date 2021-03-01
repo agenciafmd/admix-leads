@@ -12,10 +12,10 @@ class LeadChannel
         $lines = collect($notification->data['introLines']);
 
         $data['source'] = $notifiable->slug;
-        $data['name'] = '';
-        $data['email'] = '';
-        $data['phone'] = '';
-        $data['message'] = '';
+        $data['name'] = null;
+        $data['email'] = null;
+        $data['phone'] = null;
+        $data['message'] = null;
 
         foreach ($lines as $line) {
             $line = str_replace(['*'], '', $line);
@@ -31,7 +31,7 @@ class LeadChannel
             }
         }
 
-        if ($data['name'] && $data['email'] && $data['phone']) {
+        if ($data['email']) {
             $notification->toLead($data);
         }
     }
