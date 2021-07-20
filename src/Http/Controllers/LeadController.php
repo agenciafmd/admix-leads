@@ -141,7 +141,7 @@ class LeadController extends Controller
         return ($url = session()->get('backUrl')) ? redirect($url) : redirect()->route('admix.leads.index');
     }
 
-    public function batchExport($all = null, Request $request)
+    public function batchExport(Request $request, $all = null)
     {
         $query = Lead::query()
             ->select([
