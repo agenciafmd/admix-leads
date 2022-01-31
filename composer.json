@@ -13,7 +13,7 @@
     ],
     "require": {
         "laravel/framework": "^8.0",
-        "rap2hpoutre/fast-excel": "^2.2"
+        "rap2hpoutre/fast-excel": "^3"
     },
     "autoload": {
         "files": [
