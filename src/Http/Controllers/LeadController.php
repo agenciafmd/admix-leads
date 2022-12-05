@@ -132,7 +132,7 @@ class LeadController extends Controller
         return ($url = session()->get('backUrl')) ? redirect($url) : redirect()->route('admix.leads.index');
     }
 
-    public function batchExport(Request $request)
+    public function batchExport(Request $request, $all = null)
     {
         $sources = $this->sources();
         $nameFile = "relatorio-leads.xlsx";
@@ -148,8 +148,12 @@ class LeadController extends Controller
         $sheet->setCellValue('E1', 'Descrição');
         $sheet->setCellValue('F1', 'Data');
 
-        $leads = Lead::whereIn('id', $request->get('id', []))
-            ->get();
+        $query = Lead::query();
+
+        if (!$all) {
+            $query->whereIn('id', $request->get('id', []));
+        }
+          $leads = $query->get();
 
         // TODO: refatorar com each de collection
         foreach ($leads as $k => $lead) {
