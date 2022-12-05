@@ -43,7 +43,7 @@ Route::prefix(config('admix.url') . '/leads')
         Route::post('batchRestore', 'LeadController@batchRestore')
             ->name('batchRestore')
             ->middleware('can:restore,\Agenciafmd\Leads\Lead');
-        Route::post('batchExport', 'LeadController@batchExport')
+        Route::post('batchExport/{all?}', 'LeadController@batchExport')
             ->name('batchExport');
     });
 
