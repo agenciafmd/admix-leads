@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class LeadChannel
 {
-    public function send($notifiable, Notification $notification)
+    public function send(mixed $notifiable, Notification $notification): void
     {
         $lines = collect($notification->data['introLines']);
 
@@ -18,16 +18,27 @@ class LeadChannel
         $data['message'] = null;
 
         foreach ($lines as $line) {
-            $line = str_replace(['*'], '', $line);
-
-            if (Str::startsWith($this->normalize($line), ['nome'])) {
-                $data['name'] = Str::after($line, ' ');
-            } elseif (Str::startsWith($this->normalize($line), ['email', 'e-mail'])) {
-                $data['email'] = Str::after($line, ' ');
-            } elseif (Str::startsWith($this->normalize($line), ['telefone', 'celular'])) {
-                $data['phone'] = Str::after($line, ' ');
+            $line = Str::of($line)
+                ->replace('*', '')
+                ->__toString();
+            $normalizedLine = $this->normalize($line);
+            if (Str::of($normalizedLine)
+                ->startsWith(['nome'])) {
+                $data['name'] = Str::of($line)
+                    ->after(' ')
+                    ->toString();
+            } elseif (Str::of($normalizedLine)
+                ->startsWith(['email', 'e-mail'])) {
+                $data['email'] = Str::of($line)
+                    ->after(' ')
+                    ->toString();
+            } elseif (Str::of($normalizedLine)
+                ->startsWith(['telefone', 'celular'])) {
+                $data['phone'] = Str::of($line)
+                    ->after(' ')
+                    ->toString();
             } else {
-                $data['message'] .= "$line \n";
+                $data['message'] .= "{$line} \n";
             }
         }
 
@@ -36,8 +47,11 @@ class LeadChannel
         }
     }
 
-    private function normalize($string)
+    private function normalize(string $string): string
     {
-        return lcfirst(str_replace([':', '*'], '', $string));
+        return Str::of($string)
+            ->lower()
+            ->replace([':', '*'], '')
+            ->__toString();
     }
 }

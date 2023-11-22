@@ -1,8 +1,8 @@
 {
     "namespaces": [
         {
-            "namespace": "agenciafmd/leads",
-            "path": "src/resources/views"
+            "namespace": "admix-leads",
+            "path": "resources/views"
         }
     ]
 }

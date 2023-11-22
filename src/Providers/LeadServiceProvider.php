@@ -3,56 +3,72 @@
 namespace Agenciafmd\Leads\Providers;
 
 use Agenciafmd\Leads\Models\Lead;
+use Agenciafmd\Leads\Observers\LeadObserver;
 use Illuminate\Support\ServiceProvider;
 
 class LeadServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->providers();
-        
-        $this->setSearch();
+
+        $this->setObservers();
 
         $this->loadMigrations();
+
+        $this->loadTranslations();
 
         $this->publish();
     }
 
-    protected function providers()
-    {
-        $this->app->register(AuthServiceProvider::class);
-        $this->app->register(BladeServiceProvider::class);
-        $this->app->register(RouteServiceProvider::class);
-    }
-
-    protected function setSearch()
-    {
-        $this->app->make('admix-search')
-            ->registerModel(Lead::class, 'name', 'email');
-    }
-
-    protected function loadMigrations()
-    {
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-    }
-
-    public function register()
+    public function register(): void
     {
         $this->loadConfigs();
     }
 
-    protected function loadConfigs()
+    private function providers(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/admix-leads.php', 'admix-leads');
-        $this->mergeConfigFrom(__DIR__ . '/../config/gate.php', 'gate');
-        $this->mergeConfigFrom(__DIR__ . '/../config/audit-alias.php', 'audit-alias');
+        $this->app->register(BladeServiceProvider::class);
+        $this->app->register(CommandServiceProvider::class);
+        $this->app->register(RouteServiceProvider::class);
+        $this->app->register(AuthServiceProvider::class);
+        $this->app->register(LivewireServiceProvider::class);
     }
 
-    protected function publish()
+    private function publish(): void
     {
         $this->publishes([
-            __DIR__ . '/../database/factories/LeadFactory.php.stub' => base_path('database/factories/LeadFactory.php'),
-            __DIR__ . '/../database/seeders/LeadsTableSeeder.php.stub' => base_path('database/seeders/LeadsTableSeeder.php'),
+            __DIR__ . '/../../config' => base_path('config'),
+        ], 'admix-leads:config');
+
+        $this->publishes([
+            __DIR__ . '/../../database/seeders/LeadTableSeeder.php' => base_path('database/seeders/LeadTableSeeder.php'),
         ], 'admix-leads:seeders');
+
+        $this->publishes([
+            __DIR__ . '/../../lang/pt_BR' => lang_path('pt_BR'),
+        ], ['admix-leads:translations', 'admix-translations']);
+    }
+
+    private function setObservers(): void
+    {
+        Lead::observe(LeadObserver::class);
+    }
+
+    private function loadMigrations(): void
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+    }
+
+    private function loadTranslations(): void
+    {
+        $this->loadTranslationsFrom(__DIR__ . '/../../lang', 'admix-leads');
+        $this->loadJsonTranslationsFrom(__DIR__ . '/../../lang');
+    }
+
+    private function loadConfigs(): void
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../../config/admix-leads.php', 'admix-leads');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/audit-alias.php', 'audit-alias');
     }
 }

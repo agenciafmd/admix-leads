@@ -5,40 +5,41 @@
 [![Downloads](https://img.shields.io/packagist/dt/agenciafmd/admix-leads.svg?style=flat-square)](https://packagist.org/packages/agenciafmd/admix-leads)
 [![Licença](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 
-- Armazena os dados dos disparos feitos pelo [admix-postal](https://github.com/agenciafmd/admix-postal)
+- Keep all your leads safe
 
-## Instalação
+## Installation
 
+```bash
+composer require agenciafmd/admix-leads:v10.x-dev
 ```
-composer require agenciafmd/admix-leads:dev-master
-```
 
-Execute a migração
+Run the migrations
 
 ```bash
 php artisan migrate
 ```
 
-Se precisar do seed, faça a publicação
+If you want to use the seeder, add on your `database/seeders/DatabaseSeeder.php`
 
-```bash
-php artisan vendor:publish --tag=admix-leads:seeders
+```php
+use Agenciafmd\Leads\Database\Seeders\LeadTableSeeder;
+
+$this->call(LeadTableSeeder::class);
 ```
 
-**não esqueça do `composer dumpautoload`**
+## Usage
 
-O pacote escutará os disparos do admix-postal e guardará os envios.
+If you are using the `agenciafmd/admix-postal`, all leads will be saved, without any configuration.
 
-Caso precise guardar os dados manualmente.
+If not, you can use the `Agenciafmd\Leads\Models\Lead` model to save your leads
 
+```php
+Lead::query()
+    ->create([
+        'source' => 'site',
+        'name' => 'Irineu Martins Junior',
+        'email' => 'irineu@fmd.ag',
+        'phone' => '(17) 3353-2444',
+        'description' => 'Conteúdo do lead',
+    ]);
 ```
-Lead::create([
-    'source' => 'contato',
-    'name' => $data['name'],
-    'email' => $data['email'],
-    'phone' => $data['phone'],
-    'description' => 'Mensagem: ' . $data['message'],
-]);
-```
-
-Onde o `source` funciona como o "tipo" de formulário, permitindo o filtro do painel

@@ -2,18 +2,17 @@
 
 namespace Agenciafmd\Leads\Models;
 
-use Database\Factories\LeadFactory;
+use Agenciafmd\Admix\Traits\WithScopes;
+use Agenciafmd\Leads\Database\Factories\LeadFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
-use Spatie\Searchable\Searchable;
-use Spatie\Searchable\SearchResult;
 
-class Lead extends Model implements AuditableContract, Searchable
+class Lead extends Model implements AuditableContract
 {
-    use SoftDeletes, HasFactory, Auditable;
+    use Auditable, HasFactory, SoftDeletes, WithScopes;
 
     protected $guarded = [
         //
@@ -23,40 +22,18 @@ class Lead extends Model implements AuditableContract, Searchable
         'is_active' => 'boolean',
     ];
 
-    public $searchableType;
+    protected array $defaultSort = [
+        'is_active' => 'desc',
+        'created_at' => 'desc',
+        'name' => 'asc',
+    ];
 
-    public function __construct(array $attributes = [])
+    protected static function newFactory(): LeadFactory
     {
-        parent::__construct($attributes);
-
-        $this->searchableType = config('admix-leads.name');
-    }
-
-    public function getSearchResult(): SearchResult
-    {
-        return new SearchResult(
-            $this,
-            "{$this->name} ({$this->email})",
-            route('admix.leads.edit', $this->id)
-        );
-    }
-
-    public function scopeIsActive($query)
-    {
-        $query->where('is_active', 1);
-    }
-
-    public function scopeSort($query)
-    {
-        $sorts = default_sort(config('admix-leads.default_sort'));
-
-        foreach ($sorts as $sort) {
-            $query->orderBy($sort['field'], $sort['direction']);
+        if (class_exists(\Database\Factories\LeadFactory::class)) {
+            return \Database\Factories\LeadFactory::new();
         }
-    }
 
-    protected static function newFactory()
-    {
         return LeadFactory::new();
     }
 }

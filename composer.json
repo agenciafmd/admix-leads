@@ -1,8 +1,6 @@
 {
     "name": "agenciafmd/admix-leads",
-    "description": "Leads - Agência F&MD",
-    "homepage": "https://github.com/agenciafmd/admix-leads",
-    "license": "MIT",
+    "description": "Keep all your leads safe",
     "authors": [
         {
             "name": "Irineu Junior",
@@ -12,15 +10,13 @@
         }
     ],
     "require": {
-        "laravel/framework": "^8.0",
-        "rap2hpoutre/fast-excel": "^3.0"
+        "laravel/framework": "10.*"
     },
     "autoload": {
-        "files": [
-            "src/Http/helpers.php"
-        ],
         "psr-4": {
-            "Agenciafmd\\Leads\\": "src/"
+            "Agenciafmd\\Leads\\": "src/",
+            "Agenciafmd\\Leads\\Database\\Factories\\": "database/factories/",
+            "Agenciafmd\\Leads\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "extra": {
@@ -29,5 +25,8 @@
                 "Agenciafmd\\Leads\\Providers\\LeadServiceProvider"
             ]
         }
+    },
+    "config": {
+        "sort-packages": true
     }
 }
