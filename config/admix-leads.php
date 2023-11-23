@@ -2,7 +2,7 @@
 
 return [
     'name' => 'Leads',
-    'icon' => 'box',
+    'icon' => 'inbox',
     'sort' => 100,
     'sources' => [
         //
