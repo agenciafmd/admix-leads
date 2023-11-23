@@ -67,11 +67,6 @@ class Form extends Component
         ];
     }
 
-    public function updated(string $field): void
-    {
-        $this->validateOnly($field, $this->rules(), [], $this->attributes());
-    }
-
     public function submit(): null|RedirectResponse|Redirector
     {
         $this->validate($this->rules(), [], $this->attributes());
@@ -99,6 +94,11 @@ class Form extends Component
         return view('admix-leads::pages.lead.form')
             ->extends('admix::internal')
             ->section('internal-content');
+    }
+
+    public function updated(string $field): void
+    {
+        $this->validateOnly($field, $this->rules(), [], $this->attributes());
     }
 
     private function sources(): array

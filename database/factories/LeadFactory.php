@@ -20,10 +20,10 @@ class LeadFactory extends Factory
             'is_active' => $this->faker->optional(0.3, 1)
                 ->randomElement([0]),
             'source' => $this->faker->randomElement($sources),
-            'name' => $this->faker->name,
+            'name' => $this->faker->sentence(3),
             'email' => $this->faker->freeEmail,
             'phone' => $this->faker->phoneNumber,
-            'description' => $this->faker->text,
+            'description' => $this->faker->paragraphs(3, true),
         ];
     }
 }
