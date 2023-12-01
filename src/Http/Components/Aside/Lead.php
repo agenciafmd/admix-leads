@@ -11,8 +11,8 @@ class Lead extends Component
         public string $icon = '',
         public string $label = '',
         public string $url = '',
-        public bool   $active = false,
-        public bool   $visible = false,
+        public bool $active = false,
+        public bool $visible = false,
     )
     {
     }

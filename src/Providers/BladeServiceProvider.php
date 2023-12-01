@@ -45,7 +45,7 @@ class BladeServiceProvider extends ServiceProvider
     private function setMenu(): void
     {
         $this->app->make('admix-menu')
-            ->push((object)[
+            ->push((object) [
                 'component' => 'admix-leads::aside.lead',
                 'ord' => config('admix-leads.sort'),
             ]);
