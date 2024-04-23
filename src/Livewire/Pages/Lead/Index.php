@@ -1,8 +1,8 @@
 <?php
 
-namespace Agenciafmd\Leads\Http\Livewire\Pages\Lead;
+namespace Agenciafmd\Leads\Livewire\Pages\Lead;
 
-use Agenciafmd\Admix\Http\Livewire\Pages\Base\Index as BaseIndex;
+use Agenciafmd\Admix\Livewire\Pages\Base\Index as BaseIndex;
 use Agenciafmd\Leads\Models\Lead;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;

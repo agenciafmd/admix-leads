@@ -1,55 +1,55 @@
 <x-page.form
-        headerTitle="{{ $model->id ? __('Update :name', ['name' => __(config('admix-leads.name'))]) : __('Create :name', ['name' => __(config('admix-leads.name'))]) }}">
+        title="{{ $lead->exists ? __('Update :name', ['name' => __(config('admix-leads.name'))]) : __('Create :name', ['name' => __(config('admix-leads.name'))]) }}">
     <div class="row">
         <div class="col-md-6 mb-3">
-            <x-form.label for="model.is_active">
-                {{ Str::of(__('admix-leads::fields.is_active'))->ucfirst() }}
+            <x-form.label for="form.is_active">
+                {{ str(__('admix-leads::fields.is_active'))->ucfirst() }}
             </x-form.label>
-            <x-form.checkbox name="model.is_active"
-                             class="form-switch form-switch-lg"
-                             :label-on="__('Yes')"
-                             :label-off="__('No')"
+            <x-form.toggle name="form.is_active"
+                           :large="true"
+                           :label-on="__('Yes')"
+                           :label-off="__('No')"
             />
         </div>
         <div class="col-md-6 mb-3">
         </div>
         <div class="col-md-6 mb-3">
-            <x-form.select name="model.source"
+            <x-form.select name="form.source"
                            :label="__('admix-leads::fields.source')"
                            :options="$sourceOptions + config('admix-leads.sources')"/>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6 mb-3">
-            <x-form.input name="model.name" :label="__('admix-leads::fields.name')"/>
+            <x-form.input name="form.name" :label="__('admix-leads::fields.name')"/>
         </div>
         <div class="col-md-6 mb-3">
         </div>
         <div class="col-md-6 mb-3">
-            <x-form.email name="model.email" :label="__('admix-leads::fields.email')"/>
+            <x-form.email name="form.email" :label="__('admix-leads::fields.email')"/>
         </div>
         <div class="col-md-6 mb-3">
-            <x-form.input name="model.phone" :label="__('admix-leads::fields.phone')"/>
+            <x-form.input name="form.phone" :label="__('admix-leads::fields.phone')"/>
         </div>
         <div class="col-md-12 mb-3">
-            <x-form.textarea name="model.description" :label="__('admix-leads::fields.description')"/>
+            <x-form.textarea name="form.description" :label="__('admix-leads::fields.description')"/>
         </div>
     </div>
 
-    <x-slot:cardComplement>
-        @if($model->id)
+    <x-slot:complement>
+        @if($lead->exists)
             <div class="mb-3">
                 <x-form.plaintext :label="__('admix::fields.id')"
-                                  :value="$model->id"/>
+                                  :value="$lead->id"/>
             </div>
             <div class="mb-3">
                 <x-form.plaintext :label="__('admix::fields.created_at')"
-                                  :value="$model->created_at->format(config('admix.timestamp.format'))"/>
+                                  :value="$lead->created_at->format(config('admix.timestamp.format'))"/>
             </div>
             <div class="mb-3">
                 <x-form.plaintext :label="__('admix::fields.updated_at')"
-                                  :value="$model->updated_at->format(config('admix.timestamp.format'))"/>
+                                  :value="$lead->updated_at->format(config('admix.timestamp.format'))"/>
             </div>
         @endif
-    </x-slot:cardComplement>
+    </x-slot:complement>
 </x-page.form>
