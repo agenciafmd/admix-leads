@@ -31,23 +31,19 @@ class Index extends BaseIndex
 
     public function filters(): array
     {
-        $strongTableFromBuilder = $this->builder()
-            ->getModel()
-            ->getTable();
-
         $this->setAdditionalFilters([
             TextFilter::make(__('admix-leads::fields.email'), 'email')
-                ->filter(static function (Builder $builder, string $value) use ($strongTableFromBuilder) {
-                    $builder->where("{$strongTableFromBuilder}.email", 'LIKE', "%{$value}%");
+                ->filter(static function (Builder $builder, string $value) {
+                    $builder->where($builder->qualifyColumn('email'), 'like', "%{$value}%");
                 }),
             DateTimeFilter::make(__('admix::fields.initial_date'), 'initial_date')
-                ->filter(static function (Builder $builder, string $value) use ($strongTableFromBuilder) {
-                    $builder->where("{$strongTableFromBuilder}.created_at", '>=', Carbon::parse($value)
+                ->filter(static function (Builder $builder, string $value) {
+                    $builder->where($builder->qualifyColumn('created_at'), '>=', Carbon::parse($value)
                         ->format('Y-m-d H:i:s'));
                 }),
             DateTimeFilter::make(__('admix::fields.end_date'), 'end_date')
-                ->filter(static function (Builder $builder, string $value) use ($strongTableFromBuilder) {
-                    $builder->where("{$strongTableFromBuilder}.created_at", '<=', Carbon::parse($value)
+                ->filter(static function (Builder $builder, string $value) {
+                    $builder->where($builder->qualifyColumn('created_at'), '<=', Carbon::parse($value)
                         ->format('Y-m-d H:i:s'));
                 }),
         ]);
