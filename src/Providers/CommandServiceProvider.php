@@ -2,6 +2,7 @@
 
 namespace Agenciafmd\Leads\Providers;
 
+use Agenciafmd\Leads\Models\Lead;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,13 @@ class CommandServiceProvider extends ServiceProvider
 
         $this->app->booted(function () use ($minutes) {
             $schedule = $this->app->make(Schedule::class);
+
+            $schedule->command('model:prune', [
+                '--model' => [
+                    Lead::class,
+                ],
+            ])
+                ->dailyAt("03:{$minutes}");
         });
     }
 }
