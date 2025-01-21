@@ -4,9 +4,7 @@ namespace Agenciafmd\Leads\Providers;
 
 use Agenciafmd\Leads\Models\Lead;
 use Illuminate\Console\Scheduling\Schedule;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 
 class CommandServiceProvider extends ServiceProvider
 {
@@ -20,21 +18,15 @@ class CommandServiceProvider extends ServiceProvider
             //
         ]);
 
-        $minutes = Cache::rememberForever('schedule-minutes', static function () {
-            return Str::of((string) random_int(0, 59))
-                ->padLeft(2, '0')
-                ->toString();
-        });
-
-        $this->app->booted(function () use ($minutes) {
+        $this->app->booted(function () {
             $schedule = $this->app->make(Schedule::class);
+            $minutes = config('admix.schedule.minutes');
 
             $schedule->command('model:prune', [
                 '--model' => [
                     Lead::class,
                 ],
-            ])
-                ->dailyAt("03:{$minutes}");
+            ])->dailyAt("03:{$minutes}");
         });
     }
 }
