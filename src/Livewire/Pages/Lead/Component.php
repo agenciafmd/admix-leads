@@ -66,12 +66,12 @@ class Component extends LivewireComponent
             ];
         }
 
-        /* Criar a macro de ->toOptions('label', 'value', 'texto do primeiro item vazio do select. Esse usado no preprend')*/
+        /* Criar a macro de ->toOptions('label', 'value', 'texto do primeiro item vazio do select. Esse usado no preprend') */
         return Postal::query()
             ->select(['name', 'slug'])
             ->sort()
             ->get()
-            ->map(fn($postal) => [
+            ->map(fn ($postal) => [
                 'label' => $postal->name,
                 'value' => $postal->slug,
             ])
