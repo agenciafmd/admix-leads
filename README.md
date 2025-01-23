@@ -1,6 +1,6 @@
 ## F&MD - Leads
 
-![Área Administrativa](https://github.com/agenciafmd/admix-leads/raw/master/docs/screenshot.png "Área Administrativa")
+![Área Administrativa](https://github.com/agenciafmd/admix-leads/raw/v8/docs/screenshot.png "Área Administrativa")
 
 [![Downloads](https://img.shields.io/packagist/dt/agenciafmd/admix-leads.svg?style=flat-square)](https://packagist.org/packages/agenciafmd/admix-leads)
 [![Licença](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
@@ -10,7 +10,7 @@
 ## Instalação
 
 ```
-composer require agenciafmd/admix-leads:dev-master
+composer require agenciafmd/admix-leads:v8.x-dev
 ```
 
 Execute a migração
