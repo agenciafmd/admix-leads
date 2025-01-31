@@ -20,15 +20,18 @@ class Lead extends Model implements AuditableContract
         //
     ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
-
     protected array $defaultSort = [
         'is_active' => 'desc',
         'created_at' => 'desc',
         'name' => 'asc',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
 
     public function prunable(): Builder
     {
