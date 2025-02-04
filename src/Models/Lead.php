@@ -4,6 +4,8 @@ namespace Agenciafmd\Leads\Models;
 
 use Agenciafmd\Admix\Traits\WithScopes;
 use Agenciafmd\Leads\Database\Factories\LeadFactory;
+use Agenciafmd\Leads\Observers\LeadObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
+#[ObservedBy([LeadObserver::class])]
 class Lead extends Model implements AuditableContract
 {
     use Auditable, HasFactory, Prunable, SoftDeletes, WithScopes;

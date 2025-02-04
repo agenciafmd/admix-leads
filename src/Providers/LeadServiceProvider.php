@@ -2,8 +2,6 @@
 
 namespace Agenciafmd\Leads\Providers;
 
-use Agenciafmd\Leads\Models\Lead;
-use Agenciafmd\Leads\Observers\LeadObserver;
 use Illuminate\Support\ServiceProvider;
 
 class LeadServiceProvider extends ServiceProvider
@@ -11,8 +9,6 @@ class LeadServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->providers();
-
-        $this->setObservers();
 
         $this->loadMigrations();
 
@@ -48,11 +44,6 @@ class LeadServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../../lang/pt_BR' => lang_path('pt_BR'),
         ], ['admix-leads:translations', 'admix-translations']);
-    }
-
-    private function setObservers(): void
-    {
-        Lead::observe(LeadObserver::class);
     }
 
     private function loadMigrations(): void
