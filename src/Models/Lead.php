@@ -19,10 +19,6 @@ class Lead extends Model implements AuditableContract
 {
     use Auditable, HasFactory, Prunable, SoftDeletes, WithScopes;
 
-    protected $guarded = [
-        //
-    ];
-
     protected array $defaultSort = [
         'is_active' => 'desc',
         'created_at' => 'desc',
