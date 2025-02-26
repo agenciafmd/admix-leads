@@ -17,13 +17,13 @@ class LeadFactory extends Factory
             ->toArray();
 
         return [
-            'is_active' => $this->faker->optional(0.3, 1)
+            'is_active' => fake()->optional(0.3, 1)
                 ->randomElement([0]),
-            'source' => $this->faker->randomElement($sources),
-            'name' => $this->faker->sentence(3),
-            'email' => $this->faker->freeEmail,
-            'phone' => $this->faker->phoneNumber,
-            'description' => $this->faker->paragraphs(3, true),
+            'source' => fake()->randomElement($sources),
+            'name' => fake()->sentence(3),
+            'email' => fake()->freeEmail,
+            'phone' => fake()->phoneNumber,
+            'description' => fake()->paragraphs(3, true),
         ];
     }
 }
