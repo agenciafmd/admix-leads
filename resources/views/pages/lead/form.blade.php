@@ -19,7 +19,7 @@
             <x-form.select
                     name="form.source"
                     :label="__('admix-leads::fields.source')"
-                    :options="$sourceOptions + config('admix-leads.sources')"
+                    :options="array_merge($sourceOptions, config('admix-leads.sources'))"
             />
         </div>
     </div>
