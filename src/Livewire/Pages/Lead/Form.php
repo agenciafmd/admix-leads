@@ -17,16 +17,16 @@ class Form extends LivewireForm
     public string $source = '';
 
     #[Validate]
-    public string $name = '';
+    public ?string $name = null;
 
     #[Validate]
     public string $email = '';
 
     #[Validate]
-    public string $phone = '';
+    public ?string $phone = null;
 
     #[Validate]
-    public ?string $description = '';
+    public ?string $description = null;
 
     public function setModel(Lead $lead): void
     {
