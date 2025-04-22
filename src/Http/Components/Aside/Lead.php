@@ -4,7 +4,8 @@ namespace Agenciafmd\Leads\Http\Components\Aside;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-
+use Illuminate\Support\Facades\Gate;
+use Agenciafmd\Leads\Models\Lead as LeadModel;
 class Lead extends Component
 {
     public function __construct(
@@ -21,7 +22,7 @@ class Lead extends Component
         $this->label = __(config('admix-leads.name'));
         $this->url = route('admix.leads.index');
         $this->active = request()?->currentRouteNameStartsWith('admix.leads');
-        $this->visible = true;
+        $this->visible = Gate::allows('view',LeadModel::class);
 
         return view('admix::components.aside.item');
     }
