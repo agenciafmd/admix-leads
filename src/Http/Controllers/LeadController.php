@@ -10,9 +10,9 @@ use Agenciafmd\Postal\Models\Postal;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Rap2hpoutre\FastExcel\FastExcel;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
-use Rap2hpoutre\FastExcel\FastExcel;
 
 class LeadController extends Controller
 {
@@ -143,7 +143,7 @@ class LeadController extends Controller
 
     public function batchExport(Request $request, $all = null)
     {
-        $query = Lead::query()
+        $query = QueryBuilder::for(Lead::class)
             ->select([
                 'id AS Código',
                 'source AS Origem',
@@ -151,9 +151,18 @@ class LeadController extends Controller
                 'email AS E-mail',
                 'phone AS Telefone',
                 'description AS Descrição',
-                DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y %H:%i") AS Data')]);
+                DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y %H:%i") AS Data')])
+            ->defaultSorts(config('admix-leads.default_sort'))
+            ->allowedSorts($request->sort)
+            ->allowedFilters(array_merge((($request->filter) ? array_keys(array_diff_key($request->filter, array_flip(['id', 'is_active', 'source', 'created_at_gt', 'created_at_lt']))) : []), [
+                AllowedFilter::exact('id'),
+                AllowedFilter::exact('is_active'),
+                AllowedFilter::exact('source'),
+                AllowedFilter::custom('created_at_gt', new GreaterThanFilter),
+                AllowedFilter::custom('created_at_lt', new LowerThanFilter),
+            ]));
         if (!$all) {
-            $query->whereIn('id', $request->get('id', []));
+            $query->whereIn('id', $request->id ?? []);
         }
         $leads = $query->get();
 

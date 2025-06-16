@@ -33,7 +33,7 @@
                     '' => 'com os selecionados',
                     route('admix.leads.batchDestroy') => '- remover',
                     route('admix.leads.batchExport') => '- exportar',
-                ] + (($items->total() > $items->perPage()) ? [route('admix.leads.batchExport', 'all') => '- exportar todos (' . $items->total() . ' itens)'] : []), null, ['class' => 'js-batch-select form-control custom-select']) }}
+                ] + (($items->total() > $items->perPage()) ? [route('admix.leads.batchExport', ['all' => 'all'] + request()->except(['page'])) => '- exportar todos (' . $items->total() . ' itens)'] : []), null, ['class' => 'js-batch-select form-control custom-select']) }}
         @endcan
     @endif
 @endsection
@@ -98,7 +98,9 @@
                                 <span class="custom-control-label">&nbsp;</span>
                             </label>
                         </td>
-                        <td><span class="text-muted">{{ $item->id }}</span></td>
+                        <td>
+                            <span class="text-muted">{{ $item->id }}</span>
+                        </td>
                         {{--                        <td>{{ ($sources[$item->source]) ?? $item->source }}</td>--}}
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->email }}</td>
