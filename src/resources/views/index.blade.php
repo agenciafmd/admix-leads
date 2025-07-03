@@ -45,6 +45,12 @@
                 'class' => 'form-control form-control-sm'
             ]) }}
     </div>
+    <h6 class="dropdown-header bg-gray-lightest p-2">Cidade</h6>
+    <div class="p-2">
+        {{ Form::text('filter[city]', filter('city'), [
+                'class' => 'form-control form-control-sm'
+            ]) }}
+    </div>
     <h6 class="dropdown-header bg-gray-lightest p-2">Email</h6>
     <div class="p-2">
         {{ Form::text('filter[email]', filter('email'), [
@@ -82,6 +88,7 @@
                     {{--                    <th>{!! column_sort('Origem', 'source') !!}</th>--}}
                     <th>{!! column_sort('Nome', 'name') !!}</th>
                     <th>{!! column_sort('Email', 'email') !!}</th>
+                    <th>{!! column_sort('Cidade', 'city') !!}</th>
                     {{--                    <th>{!! column_sort('Telefone', 'phone') !!}</th>--}}
                     <th>{!! column_sort('Data de Criação', 'created_at') !!}</th>
                     <th class="px-0">{!! column_sort('Ativo', 'is_active') !!}</th>
@@ -104,6 +111,7 @@
                         {{--                        <td>{{ ($sources[$item->source]) ?? $item->source }}</td>--}}
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->email }}</td>
+                        <td>{{ $item->city }}</td>
                         {{--                        <td>{{ $item->phone }}</td>--}}
                         <td>{{ $item->created_at->format('d/m/Y H:i') }}</td>
                         <td class="px-0">
