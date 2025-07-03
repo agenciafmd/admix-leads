@@ -29,6 +29,10 @@ class LeadController extends Controller
                 AllowedFilter::exact('source'),
                 AllowedFilter::custom('created_at_gt', new GreaterThanFilter),
                 AllowedFilter::custom('created_at_lt', new LowerThanFilter),
+                AllowedFilter::callback('city', function ($query, $value) {
+                    $query->where('city', 'like', "%{$value}%")
+                        ->orWhereRaw("REPLACE(city, '-', ' ') LIKE ?", ["%{$value}%"]);
+                }),
             ]));
 
         if ($request->is('*/trash')) {
