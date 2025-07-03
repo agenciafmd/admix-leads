@@ -150,6 +150,7 @@ class LeadController extends Controller
                 'name AS Nome',
                 'email AS E-mail',
                 'phone AS Telefone',
+                'city AS Cidade',
                 'description AS Descrição',
                 DB::raw('DATE_FORMAT(created_at, "%d/%m/%Y %H:%i") AS Data')])
             ->defaultSorts(config('admix-leads.default_sort'))
