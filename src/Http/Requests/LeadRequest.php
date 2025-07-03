@@ -35,6 +35,9 @@ class LeadRequest extends FormRequest
             'description' => [
                 'nullable',
             ],
+            'city' => [
+                'nullable',
+            ],
         ];
     }
 
@@ -46,6 +49,7 @@ class LeadRequest extends FormRequest
             'name' => 'nome',
             'phone' => 'telefone',
             'description' => 'descrição',
+            'city' => 'cidade',
         ];
     }
 

@@ -23,6 +23,7 @@ class LeadFactory extends Factory
             'email' => $this->faker->email,
             'phone' => $this->faker->phoneNumber,
             'description' => $this->faker->text,
+            'city' => $this->faker->city,
         ];
     }
 }

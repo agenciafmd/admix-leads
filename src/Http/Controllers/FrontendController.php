@@ -40,6 +40,10 @@ class FrontendController extends Controller
             $lead->description = $request->description;
         }
 
+        if ($request->city) {
+            $lead->city = $request->city;
+        }
+
         if ($lead->save()) {
             flash('Obrigado por se cadastrar.')->success();
         } else {

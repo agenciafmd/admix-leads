@@ -16,6 +16,7 @@ class LeadChannel
         $data['email'] = null;
         $data['phone'] = null;
         $data['message'] = null;
+        $data['city'] = null;
 
         foreach ($lines as $line) {
             $line = str_replace(['*'], '', $line);
@@ -26,6 +27,8 @@ class LeadChannel
                 $data['email'] = Str::after($line, ' ');
             } elseif (Str::startsWith($this->normalize($line), ['telefone', 'celular'])) {
                 $data['phone'] = Str::after($line, ' ');
+            } elseif (Str::startsWith($this->normalize($line), ['cidade'])) {
+                $data['city'] = Str::after($line, ' ');
             } else {
                 $data['message'] .= "$line \n";
             }

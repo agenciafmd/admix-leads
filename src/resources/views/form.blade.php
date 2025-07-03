@@ -31,6 +31,8 @@
 
         {{ Form::bsText('Telefone', 'phone', null, ['class' => 'mask-phone']) }}
 
+        {{ Form::bsText('Cidade', 'city', null) }}
+
         {{ Form::bsTextarea('Descrição', 'description', null) }}
     </ul>
     <div class="card-footer bg-gray-lightest text-right">

@@ -39,6 +39,9 @@ class FrontendRequest extends FormRequest
             'description' => [
                 'nullable',
             ],
+            'city' => [
+                'nullable',
+            ]
         ];
     }
 
@@ -49,6 +52,7 @@ class FrontendRequest extends FormRequest
             'name' => 'nome',
             'phone' => 'telefone',
             'description' => 'descrição',
+            'city' => 'cidade',
         ];
     }
 
