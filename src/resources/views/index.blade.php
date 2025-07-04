@@ -47,7 +47,7 @@
     </div>
     <h6 class="dropdown-header bg-gray-lightest p-2">Cidade</h6>
     <div class="p-2">
-        {{ Form::text('filter[city]', filter('city'), [
+        {{ Form::select('filter[city]', ['' => '-'] + $cities, filter('city'), [
                 'class' => 'form-control form-control-sm'
             ]) }}
     </div>

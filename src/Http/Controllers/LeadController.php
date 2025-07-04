@@ -4,6 +4,7 @@ namespace Agenciafmd\Leads\Http\Controllers;
 
 use Agenciafmd\Admix\Http\Filters\GreaterThanFilter;
 use Agenciafmd\Admix\Http\Filters\LowerThanFilter;
+use Agenciafmd\Brokers\Models\Broker;
 use Agenciafmd\Leads\Http\Requests\LeadRequest;
 use Agenciafmd\Leads\Models\Lead;
 use Agenciafmd\Postal\Models\Postal;
@@ -27,12 +28,9 @@ class LeadController extends Controller
                 AllowedFilter::exact('id'),
                 AllowedFilter::exact('is_active'),
                 AllowedFilter::exact('source'),
+                AllowedFilter::exact('city'),
                 AllowedFilter::custom('created_at_gt', new GreaterThanFilter),
                 AllowedFilter::custom('created_at_lt', new LowerThanFilter),
-                AllowedFilter::callback('city', function ($query, $value) {
-                    $query->where('city', 'like', "%{$value}%")
-                        ->orWhereRaw("REPLACE(city, '-', ' ') LIKE ?", ["%{$value}%"]);
-                }),
             ]));
 
         if ($request->is('*/trash')) {
@@ -40,7 +38,7 @@ class LeadController extends Controller
         }
 
         $view['sources'] = $this->sources();
-
+        $view['cities'] = $this->brokers();
         $view['items'] = $query->paginate($request->get('per_page', 50));
 
         return view('agenciafmd/leads::index', $view);
@@ -177,6 +175,18 @@ class LeadController extends Controller
     private function sources()
     {
         return Postal::pluck('name', 'slug')
+            ->toArray();
+    }
+
+    private function brokers()
+    {
+        if (!class_exists(Broker::class)) {
+            return [];
+        }
+
+        return Broker::query()
+            ->isActive()
+            ->pluck('name', 'slug')
             ->toArray();
     }
 }
